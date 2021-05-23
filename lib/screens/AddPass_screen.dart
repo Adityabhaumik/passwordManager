@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utility/dbhelper.dart';
 import '../utility/box.dart';
+import 'dart:math';
 class AddPass_screen extends StatefulWidget {
   static const id = "AddPass_screen";
 
@@ -30,8 +31,10 @@ class _AddPass_screenState extends State<AddPass_screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black45,
         resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Color(0xFF0C4160),
         title: Text("Password manager"),
       ),
       body: SingleChildScrollView(
@@ -49,8 +52,17 @@ class _AddPass_screenState extends State<AddPass_screen> {
                         onChanged: (value){
                           temp.name = value;
                         },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: "Account For "),
+                      decoration:  InputDecoration(
+
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)),
+                        focusColor: Colors.white,
+                        border: OutlineInputBorder(
+                            gapPadding: 6,
+                            borderSide: BorderSide(color: Colors.white)),
+                        labelText: "Account For",
+                        labelStyle: TextStyle(color: Colors.white),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -66,8 +78,17 @@ class _AddPass_screenState extends State<AddPass_screen> {
                       onChanged: (value){
                         temp.username = value;
                       },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: "User Name"),
+                      decoration:  InputDecoration(
+
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)),
+                        focusColor: Colors.white,
+                        border: OutlineInputBorder(
+                            gapPadding: 6,
+                            borderSide: BorderSide(color: Colors.white)),
+                        labelText: "User Name",
+                        labelStyle: TextStyle(color: Colors.white),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -83,8 +104,17 @@ class _AddPass_screenState extends State<AddPass_screen> {
                         onChanged: (value){
                           temp.email = value;
                         },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: "Email"),
+                      decoration:  InputDecoration(
+
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)),
+                        focusColor: Colors.white,
+                        border: OutlineInputBorder(
+                            gapPadding: 6,
+                            borderSide: BorderSide(color: Colors.white)),
+                        labelText: "Email",
+                        labelStyle: TextStyle(color: Colors.white),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -100,8 +130,17 @@ class _AddPass_screenState extends State<AddPass_screen> {
                         onChanged: (value){
                           temp.password = value;
                         },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: "Password"),
+                      decoration:  InputDecoration(
+
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)),
+                        focusColor: Colors.white,
+                        border: OutlineInputBorder(
+                            gapPadding: 6,
+                            borderSide: BorderSide(color: Colors.white)),
+                        labelText: "PassWord",
+                        labelStyle: TextStyle(color: Colors.white),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -118,7 +157,16 @@ class _AddPass_screenState extends State<AddPass_screen> {
                           temp.hint = value;
                         },
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: "Hint"),
+
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)),
+                        focusColor: Colors.white,
+                        border: OutlineInputBorder(
+                            gapPadding: 6,
+                            borderSide: BorderSide(color: Colors.white)),
+                        labelText: "Hint",
+                        labelStyle: TextStyle(color: Colors.white),
+                      ),
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
