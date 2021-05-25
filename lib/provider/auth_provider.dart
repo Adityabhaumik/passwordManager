@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 
 class AuthProvider with ChangeNotifier{
   bool _authStatus = false;
-
-  void authenticated(){
+  String _password="";
+  void authenticated(String pass){
+    _password=pass;
     _authStatus=true;
     notifyListeners();
   }
@@ -14,7 +15,9 @@ class AuthProvider with ChangeNotifier{
     return _authStatus;
    // notifyListeners();
   }
-
+  String getPass(){
+    return _password;
+  }
 
 
 
