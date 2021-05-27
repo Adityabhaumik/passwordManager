@@ -1,3 +1,4 @@
+import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import './screens/PassList_screen.dart';
 import './screens/AddPass_screen.dart';
@@ -17,6 +18,7 @@ void main() async {
   Hive.registerAdapter(IntroAdapter());
   await Hive.openBox<Intro>('intro');
   Hive.registerAdapter(PasswordAdapter());
+
   await Hive.openBox<Password>('disguise');
   runApp(
     ChangeNotifierProvider(

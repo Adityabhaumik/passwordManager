@@ -21,7 +21,7 @@ class PasswordAdapter extends TypeAdapter<Password> {
       ..username = fields[1] as String
       ..email = fields[2] as String
       ..password = fields[3] as String
-      ..hint = fields[4] as String;
+      ..iv = fields[4] as IV;
   }
 
   @override
@@ -37,7 +37,7 @@ class PasswordAdapter extends TypeAdapter<Password> {
       ..writeByte(3)
       ..write(obj.password)
       ..writeByte(4)
-      ..write(obj.hint);
+      ..write(obj.iv);
   }
 
   @override

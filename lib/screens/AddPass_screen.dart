@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:characters/characters.dart';
 import 'package:flutter/material.dart';
 import '../utility/dbhelper.dart';
 import '../utility/box.dart';
@@ -7,7 +9,11 @@ import 'dart:io';
 import 'package:password_strength/password_strength.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
-
+import 'package:encrypt/encrypt.dart' as encryptor;
+import 'package:random_string/random_string.dart';
+import 'dart:math' show Random;
+import '../utility/inputOutputClass.dart';
+import 'dart:convert';
 class AddPass_screen extends StatefulWidget {
   static const id = "AddPass_screen";
 
@@ -17,23 +23,35 @@ class AddPass_screen extends StatefulWidget {
 
 class _AddPass_screenState extends State<AddPass_screen> {
   final _formKey = GlobalKey<FormState>();
-  final temp = Password();
+  final tempinput = inputPass();
 
-  // String myvalidator(value){
-  //   if(1==1){
-  //     return "";
-  //   }
-  //   return "Required!";
-  // }
+
 
   void add(String name, String username, String email, String password,
-      String hint) {
+       String actualkey) {
+
+    while(actualkey.length<32){
+      actualkey=actualkey+actualkey;
+    }
+    print(actualkey.characters.take(32));
+    print(actualkey.characters.take(32).length);
+    final key = encryptor.Key.fromUtf8('${actualkey.characters.take(32)}');
+
+    final iv = encryptor.IV.fromUtf8(randomAlphaNumeric(12));
+
+    final encrypter = encryptor.Encrypter(encryptor.AES(key));
+    final encrypted = encrypter.encrypt(password, iv: iv);
+    // String a = encrypted.;
+    //
+    // encryptor.Encrypted a1 = encryptor.;
+
     final temp = Password();
     temp.name = name;
-    temp.username=username;
+    temp.username = username;
     temp.email = email;
-    temp.password = password;
-    temp.hint = hint;
+    temp.password = encrypted.base64;
+    temp.iv=iv;
+    print('finetillhere');
     final box = Boxes.getPasswords();
     box.add(temp);
   }
@@ -62,7 +80,7 @@ class _AddPass_screenState extends State<AddPass_screen> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         onChanged: (value) {
-                          temp.name = value;
+                          tempinput.name = value;
                         },
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
@@ -88,7 +106,7 @@ class _AddPass_screenState extends State<AddPass_screen> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         onChanged: (value) {
-                          temp.username = value;
+                          tempinput.username = value;
                         },
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
@@ -114,7 +132,7 @@ class _AddPass_screenState extends State<AddPass_screen> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         onChanged: (value) {
-                          temp.email = value;
+                          tempinput.email = value;
                         },
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
@@ -136,7 +154,7 @@ class _AddPass_screenState extends State<AddPass_screen> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         onChanged: (value) {
-                          temp.password = value;
+                          tempinput.password = value;
                         },
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
@@ -173,9 +191,6 @@ class _AddPass_screenState extends State<AddPass_screen> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
-                        onChanged: (value) {
-                          temp.hint = value;
-                        },
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
@@ -183,7 +198,7 @@ class _AddPass_screenState extends State<AddPass_screen> {
                           border: OutlineInputBorder(
                               gapPadding: 6,
                               borderSide: BorderSide(color: Colors.white)),
-                          labelText: "Hint",
+                          labelText: "Confirm Password",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         // The validator receives the text that the user has entered.
@@ -192,7 +207,10 @@ class _AddPass_screenState extends State<AddPass_screen> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter some Hint';
                           }
-                          return null;
+                          if (value == tempinput.password) {
+                            return null;
+                          }
+                          return "Error!";
                         },
                       ),
                     ),
@@ -206,12 +224,14 @@ class _AddPass_screenState extends State<AddPass_screen> {
             backgroundColor: Colors.orangeAccent,
             onPressed: () {
               print(current.getPass());
-              // if (_formKey.currentState!.validate()) {
-              //   add(temp.name, temp.username, temp.email, temp.password,
-              //       temp.hint);
-              //   //print('Validation Works');
-              //   // print(Password);
-              // }
+              print(
+                  "${tempinput.name}${tempinput.username}${tempinput.email}${tempinput.password}");
+              if (_formKey.currentState!.validate()) {
+                add(tempinput.name, tempinput.username, tempinput.email,
+                    tempinput.password, current.getPass());
+                //print('Validation Works');
+                // print(Password);
+              }
             },
             label: Text("Encrypt and Save")));
   }

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:encrypt/encrypt.dart';
 part 'dbhelper.g.dart';
 
 @HiveType(typeId: 0)
@@ -12,7 +13,7 @@ class Password extends HiveObject{
   @HiveField(3)
   late String password="Missing";
   @HiveField(4)
-  late String hint="Missing";
+  late IV iv;
 }
 
 @HiveType(typeId: 1)

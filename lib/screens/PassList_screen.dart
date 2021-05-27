@@ -9,9 +9,6 @@ import 'package:password_manager/screens/ViewEdit_screen.dart';
 import 'package:password_manager/utility/box.dart';
 import 'package:password_manager/utility/dbhelper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
-import '../provider/auth_provider.dart';
-import 'dart:io';
 
 class PassList_screen extends StatefulWidget {
   static const id = "PassList_screen";

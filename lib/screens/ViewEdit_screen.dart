@@ -1,7 +1,16 @@
+import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
+import 'package:password_manager/utility/inputOutputClass.dart';
 import '../utility/dbhelper.dart';
 import '../utility/box.dart';
 import '../utility/dbhelper.dart';
+import '../utility/inputOutputClass.dart';
+import 'package:provider/provider.dart';
+import '../provider/auth_provider.dart';
+import 'package:encrypt/encrypt.dart' as enc;
+import '../provider/auth_provider.dart';
+import 'package:random_string/random_string.dart';
+import 'dart:math' show Random;
 
 class ViewEdit_screen extends StatefulWidget {
   static const id = "ViewEdit_screen";
@@ -13,41 +22,63 @@ class ViewEdit_screen extends StatefulWidget {
 class _ViewEdit_screenState extends State<ViewEdit_screen> {
   final _formKey = GlobalKey<FormState>();
   bool edit = false;
-  Password edited = Password();
+  inputPass local = inputPass();
   Password current = Password();
 
-  // String myvalidator(value){
-  //   if(1==1){
-  //     return "";
-  //   }
-  //   return "Required!";
-  // }
-  //
-  // void add(String name,String username,String email,String password,String hint){
-  //   final temp=Password();
-  //   temp.name=name;
-  //   temp.email=email;
-  //   temp.password=password;
-  //   temp.hint=hint;
-  //   final box =Boxes.getPasswords();
-  //   box.add(temp);
-  // }
+  String decriptPass(context) {
+    final carry = Provider.of<AuthProvider>(context);
+    final key = enc.Key.fromUtf8(carry.getPass());
+    final encrypter = Encrypter(AES(key));
+    final decrypted = encrypter.decrypt64(current.password, iv: current.iv);
+    return decrypted;
+  }
+  void saveAfterEditing(inputPass a,
+      String actualkey,Password here) {
+    final key = enc.Key.fromUtf8('${actualkey}');
+    final iv = enc.IV.fromUtf8(randomAlphaNumeric(20));
+    final encrypter = enc.Encrypter(enc.AES(key));
+    final encrypted = encrypter.encrypt(a.password, iv: iv);
+
+    here.name = a.name;
+    here.username =a.username;
+    here.email = a.email;
+    here.password = encrypted.base64;
+    here.iv=iv;
+    // final box = Boxes.getPasswords();
+    // box.add(temp);
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      local.password = decriptPass(context);
+      local.name=current.name;
+      local.username=current.username;
+      local.email=current.email;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    current = ModalRoute.of(context)!.settings.arguments as Password;
+    final current = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Password;
 
     void enableEdit() {
       setState(() {
         edit = true;
-        edited.name = current.name;
-        edited.username = current.username;
-        edited.email = current.email;
-        edited.password = current.password;
-        edited.hint = current.hint;
-      });
+     });
     }
 
-    void saveEdit() {
+    void saveEdit(inputPass x,String key,Password y) {
+
+      //saveAfterEditing(x, key,y);
+
+
       setState(() {
         edit = false;
         print("INside set state${edit}");
@@ -56,6 +87,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
       print(edit);
     }
 
+    final carry = Provider.of<AuthProvider>(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         //backgroundColor:  Color(0xFF071330),
@@ -88,7 +120,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                       child: TextFormField(
                         enabled: edit,
                         onChanged: (value) {
-                          edited.name = value;
+                          local.name = value;
                         },
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -107,7 +139,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                       child: TextFormField(
                         enabled: edit,
                         onChanged: (value) {
-                          edited.username = value;
+                          local.username = value;
                         },
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -125,7 +157,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         onChanged: (value) {
-                          edited.email = value;
+                          local.email = value;
                         },
                         enabled: edit,
                         decoration: InputDecoration(
@@ -142,42 +174,47 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        onChanged: (value) {
-                          edited.password = value;
-                        },
-                        enabled: edit,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Password : ${current.password}"),
-                        // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
+                      child: Row(
+                        children: [
+                          TextFormField(
+                            onChanged: (value) {
+                              local.password = value;
+                            },
+                            enabled: edit,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: "Password : ${current.password}"),
+                            // The validator receives the text that the user has entered.
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                          ),
+                          IconButton(icon: Icon(Icons.remove_red_eye_sharp), onPressed: (){})
+                        ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        onChanged: (value) {
-                          edited.hint = value;
-                        },
-                        enabled: edit,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Hint : ${current.hint}"),
-                        // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: TextFormField(
+                    //     onChanged: (value) {
+                    //       local.hint = value;
+                    //     },
+                    //     enabled: edit,
+                    //     decoration: InputDecoration(
+                    //         border: OutlineInputBorder(),
+                    //         labelText: "Hint : ${current.hint}"),
+                    //     // The validator receives the text that the user has entered.
+                    //     validator: (value) {
+                    //       if (value == null || value.isEmpty) {
+                    //         return 'Please enter some text';
+                    //       }
+                    //       return null;
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -186,19 +223,11 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
         ),
         floatingActionButton: edit
             ? FloatingActionButton.extended(
-                backgroundColor: Colors.orangeAccent,
-                onPressed: () {
-                  current.name = edited.name;
-                  current.username = edited.username;
-                  current.email = edited.email;
-                  current.password = edited.password;
-                  current.hint = edited.hint;
-                  setState(() {
-                    current.save();
-                  });
-                  saveEdit();
-                },
-                label: Text("Encrypt and Save"))
+            backgroundColor: Colors.orangeAccent,
+            onPressed: () {
+                 saveEdit(local,carry.getPass(),current);
+            },
+            label: Text("Encrypt and Save"))
             : Container());
   }
 }
