@@ -13,7 +13,7 @@ class Password extends HiveObject{
   @HiveField(3)
   late String password="Missing";
   @HiveField(4)
-  late IV iv;
+  late String iv="xyz";
 }
 
 @HiveType(typeId: 1)

@@ -11,6 +11,8 @@ import 'package:encrypt/encrypt.dart' as enc;
 import '../provider/auth_provider.dart';
 import 'package:random_string/random_string.dart';
 import 'dart:math' show Random;
+import 'package:characters/characters.dart';
+import '../functions/ViewEdit_screenFunctions.dart';
 
 class ViewEdit_screen extends StatefulWidget {
   static const id = "ViewEdit_screen";
@@ -24,259 +26,168 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
   bool edit = false;
   inputPass local = inputPass();
   Password current = Password();
-
-  String decriptPass(context) {
-    final carry = Provider.of<AuthProvider>(context);
-    final key = enc.Key.fromUtf8(carry.getPass());
-    final encrypter = Encrypter(AES(key));
-    final decrypted = encrypter.decrypt64(current.password, iv: current.iv);
-    return decrypted;
-  }
-  void saveAfterEditing(inputPass a,
-      String actualkey,Password here) {
-    final key = enc.Key.fromUtf8('${actualkey}');
-    final iv = enc.IV.fromUtf8(randomAlphaNumeric(20));
-    final encrypter = enc.Encrypter(enc.AES(key));
-    final encrypted = encrypter.encrypt(a.password, iv: iv);
-
-    here.name = a.name;
-    here.username =a.username;
-    here.email = a.email;
-    here.password = encrypted.base64;
-    here.iv=iv;
-    // final box = Boxes.getPasswords();
-    // box.add(temp);
-  }
-
+  bool loaded = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      local.password = decriptPass(context);
-      local.name=current.name;
-      local.username=current.username;
-      local.email=current.email;
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      final currentthis =
+          ModalRoute.of(context)!.settings.arguments as Password;
+      local.password = await decriptPass(context);
+      local.name = await currentthis.name;
+      local.username = await currentthis.username;
+      local.email = await currentthis.email;
+      setState(() {
+        loaded = true;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final current = ModalRoute
-        .of(context)!
-        .settings
-        .arguments as Password;
-
-    void enableEdit() {
-      setState(() {
-        edit = true;
-     });
-    }
-
-    void saveEdit(inputPass x,String key,Password y) {
-
-      //saveAfterEditing(x, key,y);
-
-
-      setState(() {
-        edit = false;
-        print("INside set state${edit}");
-      });
-
-      print(edit);
-    }
+    final current = ModalRoute.of(context)!.settings.arguments as Password;
 
     final carry = Provider.of<AuthProvider>(context);
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        //backgroundColor:  Color(0xFF071330),
-        appBar: AppBar(
-          backgroundColor: Color(0xFF0C4160),
-          actions: [
-            edit
-                ? Container()
-                : IconButton(icon: Icon(Icons.edit), onPressed: enableEdit),
-            IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  current.delete();
-                  Navigator.pop(context);
-                }),
-          ],
-          title: Text("View Edit Screen"),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        enabled: edit,
-                        onChanged: (value) {
-                          local.name = value;
-                        },
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Name: ${current.name} "),
-                        // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
+    return loaded
+        ? Scaffold(
+            resizeToAvoidBottomInset: false,
+            //backgroundColor:  Color(0xFF071330),
+            appBar: AppBar(
+              backgroundColor: Color(0xFF0C4160),
+              actions: [
+                edit
+                    ? Container()
+                    : IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          setState(() {
+                            edit = true;
+                          });
+                        }),
+                IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      current.delete();
+                      Navigator.pop(context);
+                    }),
+              ],
+              title: Text("View Edit Screen"),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          enabled: edit,
+                          onChanged: (value) {
+                            if (value != null) {
+                              local.name = value;
+                            }
+                          },
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Name: ${local.name} "),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        enabled: edit,
-                        onChanged: (value) {
-                          local.username = value;
-                        },
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "User Name : ${current.username}"),
-                        // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          enabled: edit,
+                          onChanged: (value) {
+                            local.username = value;
+                          },
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "User Name : ${local.username}"),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        onChanged: (value) {
-                          local.email = value;
-                        },
-                        enabled: edit,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "Email : ${current.email}"),
-                        // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          }
-                          return null;
-                        },
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          onChanged: (value) {
+                            if (value != null) {
+                              local.email = value;
+                            }
+                          },
+                          enabled: edit,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Email : ${local.email}"),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          TextFormField(
-                            onChanged: (value) {
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          onChanged: (value) {
+                            if (value != null) {
                               local.password = value;
-                            },
-                            enabled: edit,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: "Password : ${current.password}"),
-                            // The validator receives the text that the user has entered.
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
-                              }
-                              return null;
-                            },
-                          ),
-                          IconButton(icon: Icon(Icons.remove_red_eye_sharp), onPressed: (){})
-                        ],
+                            }
+                          },
+                          enabled: edit,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Password : ${local.password}"),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                    ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: TextFormField(
-                    //     onChanged: (value) {
-                    //       local.hint = value;
-                    //     },
-                    //     enabled: edit,
-                    //     decoration: InputDecoration(
-                    //         border: OutlineInputBorder(),
-                    //         labelText: "Hint : ${current.hint}"),
-                    //     // The validator receives the text that the user has entered.
-                    //     validator: (value) {
-                    //       if (value == null || value.isEmpty) {
-                    //         return 'Please enter some text';
-                    //       }
-                    //       return null;
-                    //     },
-                    //   ),
-                    // ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        floatingActionButton: edit
-            ? FloatingActionButton.extended(
-            backgroundColor: Colors.orangeAccent,
-            onPressed: () {
-                 saveEdit(local,carry.getPass(),current);
-            },
-            label: Text("Encrypt and Save"))
-            : Container());
+            floatingActionButton: edit
+                ? FloatingActionButton.extended(
+                    backgroundColor: Colors.orangeAccent,
+                    onPressed: () {
+                      print(local.name);
+                      print(local.email);
+                      print(local.username);
+                      saveAfterEditing(local, carry.getPass(), current);
+                      setState(() {
+                        edit = false;
+                      });
+                    },
+                    label: Text("Encrypt and Save"))
+                : Container())
+        : Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
   }
 }
-//
-// class MyCustomForm extends StatefulWidget {
-//   @override
-//   MyCustomFormState createState() {
-//     return MyCustomFormState();
-//   }
-// }
-//
-// class MyCustomFormState extends State<MyCustomForm> {
-//
-//   final _formKey = GlobalKey<FormState>();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//
-//     return Form(
-//       key: _formKey,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: <Widget>[
-//           TextFormField(
-//             // The validator receives the text that the user has entered.
-//             validator: (value) {
-//               if (value == null || value.isEmpty) {
-//                 return 'Please enter some text';
-//               }
-//               return null;
-//             },
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.symmetric(vertical: 16.0),
-//             child: ElevatedButton(
-//               onPressed: () {
-//                 // Validate returns true if the form is valid, or false otherwise.
-//                 if (_formKey.currentState!.validate()) {
-//                   // If the form is valid, display a snackbar. In the real world,
-//                   // you'd often call a server or save the information in a database.
-//                   ScaffoldMessenger.of(context)
-//                       .showSnackBar(SnackBar(content: Text('Processing Data')));
-//                 }
-//               },
-//               child: Text('Submit'),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//}

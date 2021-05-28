@@ -60,7 +60,7 @@ class _PassList_screenState extends State<PassList_screen> {
                     color: Colors
                         .primaries[Random().nextInt(Colors.primaries.length)],
                     child: new Center(
-                      child: new Text('${pass[index].name}'),
+                      child: new Text('${pass[index].name}',style: TextStyle(color: Colors.white),),
                     )),
               ),
             ),
