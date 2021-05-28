@@ -12,9 +12,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class PassList_screen extends StatefulWidget {
   static const id = "PassList_screen";
+
   @override
   _PassList_screenState createState() => _PassList_screenState();
 }
+
 class _PassList_screenState extends State<PassList_screen> {
   @override
   void dispose() {
@@ -22,12 +24,14 @@ class _PassList_screenState extends State<PassList_screen> {
     Hive.close();
     super.dispose();
   }
+
   static Future<void> pop({bool? animated}) async {
-    await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop', animated);
+    await SystemChannels.platform
+        .invokeMethod<void>('SystemNavigator.pop', animated);
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Color(0xFF071330),
       appBar: AppBar(
@@ -60,7 +64,10 @@ class _PassList_screenState extends State<PassList_screen> {
                     color: Colors
                         .primaries[Random().nextInt(Colors.primaries.length)],
                     child: new Center(
-                      child: new Text('${pass[index].name}',style: TextStyle(color: Colors.white),),
+                      child: new Text(
+                        '${pass[index].name}',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     )),
               ),
             ),

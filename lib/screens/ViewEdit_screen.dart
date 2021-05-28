@@ -1,17 +1,9 @@
-import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:password_manager/utility/inputOutputClass.dart';
-import '../utility/dbhelper.dart';
-import '../utility/box.dart';
 import '../utility/dbhelper.dart';
 import '../utility/inputOutputClass.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
-import 'package:encrypt/encrypt.dart' as enc;
-import '../provider/auth_provider.dart';
-import 'package:random_string/random_string.dart';
-import 'dart:math' show Random;
-import 'package:characters/characters.dart';
 import '../functions/ViewEdit_screenFunctions.dart';
 
 class ViewEdit_screen extends StatefulWidget {
@@ -52,7 +44,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
     final carry = Provider.of<AuthProvider>(context);
     return loaded
         ? Scaffold(
-          backgroundColor:Color(0xFF071330),
+            backgroundColor: Color(0xFF071330),
             resizeToAvoidBottomInset: false,
             //backgroundColor:  Color(0xFF071330),
             appBar: AppBar(
@@ -94,16 +86,16 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                             }
                           },
 
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white)),
-                              focusColor: Colors.white,
-                              border: OutlineInputBorder(
-                                  gapPadding: 6,
-                                  borderSide: BorderSide(color: Colors.white)),
-                              labelText: "Account For : ${local.name}",
-                              labelStyle: TextStyle(color: Colors.white),
-                            ),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
+                            focusColor: Colors.white,
+                            border: OutlineInputBorder(
+                                gapPadding: 6,
+                                borderSide: BorderSide(color: Colors.white)),
+                            labelText: "Account For : ${local.name}",
+                            labelStyle: TextStyle(color: Colors.white),
+                          ),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value == null || value.isEmpty) {

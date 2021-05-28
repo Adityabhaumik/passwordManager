@@ -2,21 +2,19 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:password_manager/utility/inputOutputClass.dart';
 import '../utility/dbhelper.dart';
-import '../utility/box.dart';
-import '../utility/dbhelper.dart';
 import '../utility/inputOutputClass.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
 import 'package:encrypt/encrypt.dart' as enc;
-import '../provider/auth_provider.dart';
 import 'package:random_string/random_string.dart';
-import 'dart:math' show Random;
 import 'package:characters/characters.dart';
 
 
-
 String decriptPass(context) {
-  final current = ModalRoute.of(context)!.settings.arguments as Password;
+  final current = ModalRoute
+      .of(context)!
+      .settings
+      .arguments as Password;
   final carry = Provider.of<AuthProvider>(context, listen: false);
   var actualkey = carry.getPass();
   while (actualkey.length < 32) {
@@ -31,7 +29,6 @@ String decriptPass(context) {
   print(decrypted);
   return decrypted;
 }
-
 
 
 void saveAfterEditing(inputPass a, String actualkey, Password here) {

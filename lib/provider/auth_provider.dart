@@ -1,27 +1,21 @@
 import 'package:flutter/cupertino.dart';
 
-//import '../utility/auth.dart';
-
-class AuthProvider with ChangeNotifier{
+class AuthProvider with ChangeNotifier {
   bool _authStatus = false;
-  String _password="";
-  void authenticated(String pass){
-    _password=pass;
-    _authStatus=true;
+  String _password = "";
+
+  void authenticated(String pass) {
+    _password = pass;
+    _authStatus = true;
     notifyListeners();
   }
 
-  bool isAuthenticated(){
+  bool isAuthenticated() {
     return _authStatus;
-   // notifyListeners();
+    // notifyListeners();
   }
-  String getPass(){
+
+  String getPass() {
     return _password;
   }
-
-
-
-
-
-
 }

@@ -1,19 +1,9 @@
-import 'dart:convert';
-import 'package:characters/characters.dart';
 import 'package:flutter/material.dart';
-import '../utility/dbhelper.dart';
-import '../utility/box.dart';
-import 'dart:math';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'dart:io';
 import 'package:password_strength/password_strength.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
-import 'package:encrypt/encrypt.dart' as encryptor;
-import 'package:random_string/random_string.dart';
-import 'dart:math' show Random;
 import '../utility/inputOutputClass.dart';
-import 'dart:convert';
 import '../functions/AddPass_screenFunctions.dart';
 
 class AddPass_screen extends StatefulWidget {
@@ -134,7 +124,7 @@ class _AddPass_screenState extends State<AddPass_screen> {
                         border: OutlineInputBorder(
                             gapPadding: 6,
                             borderSide: BorderSide(color: Colors.white)),
-                        labelText: "PassWord",
+                        labelText: "Password",
                         labelStyle: TextStyle(color: Colors.white),
                       ),
                       // The validator receives the text that the user has entered.

@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:password_manager/utility/dbhelper.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
 import 'package:dbcrypt/dbcrypt.dart';
-
-//import '../utility/auth.dart';
 import '../utility/box.dart';
 
 class FirstName_screen extends StatefulWidget {
@@ -16,8 +12,8 @@ class FirstName_screen extends StatefulWidget {
 }
 
 class _FirstName_screenState extends State<FirstName_screen> {
-  DBCrypt dBCrypt = DBCrypt();
   final _formKey = GlobalKey<FormState>();
+  DBCrypt dBCrypt = DBCrypt();
   String Name = "";
   String Password = "";
   String CarryPass = "";
@@ -288,22 +284,3 @@ class _FirstName_screenState extends State<FirstName_screen> {
     );
   }
 }
-
-// var box = Hive.box('myBox');
-//
-// box.put('name', 'David');
-//
-// var name = box.get('name');
-//
-// print('Name: $name');
-//error: The argument type 'MaterialColor' can't be assigned to the parameter type 'MaterialStateProperty<Color?>?'. (argument_type_not_assignable at [password_manager] lib\screens\Name.dart:164)
-
-// void add(String name,String username,String email,String password,String hint){
-//   final temp=Password();
-//   temp.name=name;
-//   temp.email=email;
-//   temp.password=password;
-//   temp.hint=hint;
-//   final box =Boxes.getPasswords();
-//   box.add(temp);
-// }
