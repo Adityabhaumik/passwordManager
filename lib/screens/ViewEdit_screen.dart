@@ -52,6 +52,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
     final carry = Provider.of<AuthProvider>(context);
     return loaded
         ? Scaffold(
+          backgroundColor:Color(0xFF071330),
             resizeToAvoidBottomInset: false,
             //backgroundColor:  Color(0xFF071330),
             appBar: AppBar(
@@ -92,9 +93,17 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                               local.name = value;
                             }
                           },
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Name: ${local.name} "),
+
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              focusColor: Colors.white,
+                              border: OutlineInputBorder(
+                                  gapPadding: 6,
+                                  borderSide: BorderSide(color: Colors.white)),
+                              labelText: "Account For : ${local.name}",
+                              labelStyle: TextStyle(color: Colors.white),
+                            ),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -111,9 +120,17 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                           onChanged: (value) {
                             local.username = value;
                           },
+
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "User Name : ${local.username}"),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
+                            focusColor: Colors.white,
+                            border: OutlineInputBorder(
+                                gapPadding: 6,
+                                borderSide: BorderSide(color: Colors.white)),
+                            labelText: "User Name : ${local.username}",
+                            labelStyle: TextStyle(color: Colors.white),
+                          ),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -132,9 +149,17 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                             }
                           },
                           enabled: edit,
+
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Email : ${local.email}"),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
+                            focusColor: Colors.white,
+                            border: OutlineInputBorder(
+                                gapPadding: 6,
+                                borderSide: BorderSide(color: Colors.white)),
+                            labelText: "Email : ${local.email}",
+                            labelStyle: TextStyle(color: Colors.white),
+                          ),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -153,9 +178,17 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                             }
                           },
                           enabled: edit,
+
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: "Password : ${local.password}"),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
+                            focusColor: Colors.white,
+                            border: OutlineInputBorder(
+                                gapPadding: 6,
+                                borderSide: BorderSide(color: Colors.white)),
+                            labelText: "Password: ${local.password}",
+                            labelStyle: TextStyle(color: Colors.white),
+                          ),
                           // The validator receives the text that the user has entered.
                           validator: (value) {
                             if (value == null || value.isEmpty) {

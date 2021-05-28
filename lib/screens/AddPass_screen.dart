@@ -31,7 +31,7 @@ class _AddPass_screenState extends State<AddPass_screen> {
   Widget build(BuildContext context) {
     dynamic current = Provider.of<AuthProvider>(context);
     return Scaffold(
-      backgroundColor: Colors.black45,
+      backgroundColor: Color(0xFF071330),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF0C4160),
