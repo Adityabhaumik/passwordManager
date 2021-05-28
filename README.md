@@ -1,10 +1,24 @@
-# password_manager
+# password_manager || Screeen  
 
-A new Flutter application.
+A open source flutter based password manager.
 
-## Getting Started
+## How it Works
 
-This project is a starting point for a Flutter application.
+This app uses encryption algorithums like aes and also uses bcrypt . 
+For database Hive is used as it allows its own layer of encription (not yet implemented) and is quite fast.
+Play Store :
+
+Feel free to contribute if you feel like :)
+
+Few images:
+
+
+
+
+
+![sreeen1](https://user-images.githubusercontent.com/52599836/120022391-f99d3400-c009-11eb-8c07-f1240b511143.png)
+![Screeen3](https://user-images.githubusercontent.com/52599836/120022417-015cd880-c00a-11eb-806a-b0d96fe30076.png)
+
 
 A few resources to get you started if this is your first Flutter project:
 
