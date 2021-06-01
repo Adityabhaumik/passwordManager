@@ -11,14 +11,18 @@ This app uses encryption algorithums like aes and also uses bcrypt .
 For database Hive is used as it allows its own layer of encription (not yet implemented) and is quite fast.
 
 #Play Store :https://play.google.com/store/apps/details?id=com.adityaBhaumik.Screeen
-#Feel free to contribute if you feel like :)
-
-#Few images:
 
 
 
-##![sreeen1](https://user-images.githubusercontent.com/52599836/120022664-5a2c7100-c00a-11eb-8107-f564bae60b62.png)
 
-##![Screeen3](https://user-images.githubusercontent.com/52599836/120022667-5d276180-c00a-11eb-958d-79be04e1f87b.png)
+##F#eel free to contribute if you feel like :)
+
+##Few images:
+
+
+
+![sreeen1](https://user-images.githubusercontent.com/52599836/120022664-5a2c7100-c00a-11eb-8107-f564bae60b62.png)
+
+![Screeen3](https://user-images.githubusercontent.com/52599836/120022667-5d276180-c00a-11eb-958d-79be04e1f87b.png)
 
 
