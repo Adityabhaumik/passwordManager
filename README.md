@@ -10,14 +10,15 @@ A open source flutter based password manager.
 This app uses encryption algorithums like aes and also uses bcrypt . 
 For database Hive is used as it allows its own layer of encription (not yet implemented) and is quite fast.
 
-#Play Store :https://play.google.com/store/apps/details?id=com.adityaBhaumik.Screeen
+## Play Store :
+https://play.google.com/store/apps/details?id=com.adityaBhaumik.Screeen
 
 
 
 
-##F#eel free to contribute if you feel like :)
+# Feel free to contribute if you feel like :)
 
-##Few images:
+## Few images:
 
 
 
