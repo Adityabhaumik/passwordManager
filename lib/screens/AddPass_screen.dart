@@ -16,7 +16,7 @@ class AddPass_screen extends StatefulWidget {
 class _AddPass_screenState extends State<AddPass_screen> {
   final _formKey = GlobalKey<FormState>();
   final tempinput = inputPass();
-
+  Color passStrengthColor =Colors.transparent;
   @override
   Widget build(BuildContext context) {
     dynamic current = Provider.of<AuthProvider>(context);
@@ -116,6 +116,21 @@ class _AddPass_screenState extends State<AddPass_screen> {
                       style: TextStyle(color: Colors.white),
                       onChanged: (value) {
                         tempinput.password = value;
+                        double strength =
+                        estimatePasswordStrength(value.toString());
+                        if (strength <= 0.7) {
+                          setState(() {
+                            passStrengthColor=Colors.red;
+                          });
+
+                        }
+                        if (strength > 0.7) {
+                          setState(() {
+                            passStrengthColor=Colors.greenAccent;
+                          });
+                          print('this worked');
+
+                        }
                       },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -138,9 +153,15 @@ class _AddPass_screenState extends State<AddPass_screen> {
                         double strength =
                             estimatePasswordStrength(value.toString());
                         if (strength <= 0.7) {
-                          return ('This password is weak!');
+                          setState(() {
+                            passStrengthColor=Colors.red;
+                          });
+                          return null;
                         }
                         if (strength > 0.7) {
+                          setState(() {
+                            passStrengthColor=Colors.greenAccent;
+                          });
                           print('this worked');
                           return null;
                         }
@@ -175,6 +196,13 @@ class _AddPass_screenState extends State<AddPass_screen> {
                       },
                     ),
                   ),
+                  Center(
+                    child: Container(
+                      color: passStrengthColor,
+                      height: MediaQuery.of(context).size.height * 0.008,
+                      width: MediaQuery.of(context).size.width * 0.5,
+                    ),
+                  )
                 ],
               ),
             ),

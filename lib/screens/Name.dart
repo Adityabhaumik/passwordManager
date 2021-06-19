@@ -18,7 +18,7 @@ class _FirstName_screenState extends State<FirstName_screen> {
   String Password = "";
   String CarryPass = "";
   bool newUser = true;
-
+  bool hidepass= true;
   var user = Boxes.getIntro();
 
   void userExist() async {
@@ -235,16 +235,28 @@ class _FirstName_screenState extends State<FirstName_screen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        obscureText: hidepass,
                         style: TextStyle(color: Colors.white),
                         cursorColor: Colors.white,
                         decoration: InputDecoration(
+                          suffixIcon: GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                hidepass=!hidepass;
+                              });
+                            },
+                            child: Icon(
+                              Icons.remove_red_eye_sharp,
+                              color: hidepass?Colors.red[400]:Colors.greenAccent,
+                            ),
+                          ),
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white)),
                           focusColor: Colors.white,
                           border: OutlineInputBorder(
                               gapPadding: 6,
                               borderSide: BorderSide(color: Colors.white)),
-                          labelText: "PassWord",
+                          labelText: "Password",
                           labelStyle: TextStyle(color: Colors.white),
                         ),
                         // The validator receives the text that the user has entered.

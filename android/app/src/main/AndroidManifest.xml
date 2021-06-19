@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aditya.password_manager">
    <application
-        android:label="password_manager"
+        android:label="Screeeen"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -5,6 +5,7 @@ import '../utility/inputOutputClass.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
 import '../functions/ViewEdit_screenFunctions.dart';
+import 'package:password_strength/password_strength.dart';
 
 class ViewEdit_screen extends StatefulWidget {
   static const id = "ViewEdit_screen";
@@ -19,7 +20,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
   inputPass local = inputPass();
   Password current = Password();
   bool loaded = false;
-
+  Color passStrengthColor =Colors.greenAccent;
   @override
   void initState() {
     // TODO: implement initState
@@ -79,6 +80,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           enabled: edit,
                           onChanged: (value) {
                             if (value != null) {
@@ -108,6 +110,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           enabled: edit,
                           onChanged: (value) {
                             local.username = value;
@@ -135,6 +138,7 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           onChanged: (value) {
                             if (value != null) {
                               local.email = value;
@@ -164,9 +168,22 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          style: TextStyle(color: Colors.white),
                           onChanged: (value) {
                             if (value != null) {
                               local.password = value;
+                              double strength =
+                              estimatePasswordStrength(value.toString());
+                              if (strength <= 0.7) {
+                                setState(() {
+                                  passStrengthColor=Colors.red;
+                                });
+                              }
+                              if (strength >= 0.7) {
+                                setState(() {
+                                  passStrengthColor=Colors.greenAccent;
+                                });
+                              }
                             }
                           },
                           enabled: edit,
@@ -190,6 +207,13 @@ class _ViewEdit_screenState extends State<ViewEdit_screen> {
                           },
                         ),
                       ),
+                      edit?Center(
+                        child: Container(
+                          color: passStrengthColor,
+                          height: MediaQuery.of(context).size.height * 0.008,
+                          width: MediaQuery.of(context).size.width * 0.5,
+                        ),
+                      ):Container()
                     ],
                   ),
                 ),
